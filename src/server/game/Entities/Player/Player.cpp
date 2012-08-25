@@ -2962,11 +2962,11 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     // Favored experience increase END
 
     // XP to money conversion processed in Player::RewardQuest
-    if (level == 60 && !GetAchievementMgr().HasAchieved(1283)) {
-        ModifyMoney(xp * 0.3);
+    if (level == 60 && !GetAchievementMgr().HasAchieved(1283) || level == 60 && !GetAchievementMgr().HasAchieved(1285)) {
+        ModifyMoney(xp * 0.5);
         return;
-    } else if (level == 70 && !GetAchievementMgr().HasAchieved(1287)) {
-    ModifyMoney(xp * 0.3);
+    } else if (level == 70 && !GetAchievementMgr().HasAchieved(1287) || level == 70 && !GetAchievementMgr().HasAchieved(1286)) {
+    ModifyMoney(xp * 0.5);
         return;
     } else if (level >= sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)) {        return;
     }
@@ -15199,17 +15199,24 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
         SetQuestSlot(log_slot, 0);
 
     bool rewarded = (m_RewardedQuests.find(quest_id) != m_RewardedQuests.end());
-
+    uint8 level = getLevel();
     // Not give XP in case already completed once repeatable quest
+    //if (level <= 60) {
     uint32 XP = rewarded ? 0 : uint32(quest->XPValue(this)*sWorld->getRate(RATE_XP_QUEST));
-
+	//} else {
+    //uint32 XP = rewarded ? 0 : uint32(quest->XPValue(this)*sWorld->getRate(RATE_XP_QUEST));
+	//}
     // handle SPELL_AURA_MOD_XP_QUEST_PCT auras
+	if (level <= 60) {
+		XP = XP * 2;
+	} else {
+		XP = XP;
+	}
     Unit::AuraEffectList const& ModXPPctAuras = GetAuraEffectsByType(SPELL_AURA_MOD_XP_QUEST_PCT);
     for (Unit::AuraEffectList::const_iterator i = ModXPPctAuras.begin(); i != ModXPPctAuras.end(); ++i)
         AddPctN(XP, (*i)->GetAmount());
 
     int32 moneyRew = 0;
-    uint8 level = getLevel();
     if (getLevel() < sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
         GiveXP(XP, NULL);
     else
