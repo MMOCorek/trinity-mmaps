@@ -559,7 +559,8 @@ void KillRewarder::_RewardPlayer(Player* player, bool isDungeon)
     if (!_isPvP || _isBattleGround)
     {
         const float rate = _group ?
-            _groupRate * float(player->getLevel()) / _sumLevel : // Group rate depends on summary level.
+            //_groupRate * float(player->getLevel()) / _sumLevel : // Group rate depends on summary level.
+            1.0f:
             1.0f;                                                // Personal rate is 100%.
         if (_xp)
             // 4.2. Give XP.
