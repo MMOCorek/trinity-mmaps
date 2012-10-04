@@ -370,7 +370,7 @@ void Unit::MonsterMoveWithSpeed(float x, float y, float z, float speed, bool gen
 {
     Movement::MoveSplineInit init(*this);
     init.MoveTo(x,y,z);
-    init.SetVelocity(speed);
+    init.MoveTo(x, y, z, generatePath, forceDestination);
     init.Launch();
 }
 
