@@ -32,6 +32,8 @@ include(Examples/CMakeLists.txt)
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
   Custom/npc_teleport.cpp
+  Custom/login.cpp
+  Custom/pet.cpp
   ../game/AI/ScriptedAI/sc_npc_teleport.cpp
   ../game/AI/ScriptedAI/sc_npc_teleport.h
   ../game/AI/ScriptedAI/ScriptedEscortAI.cpp
